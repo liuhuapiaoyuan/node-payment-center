@@ -1,0 +1,28 @@
+{
+  "name": "payment-center",
+  "version": "1.0.0",
+  "description": "支付中心\r 支持微信支付，支付宝支付",
+  "main": "dist/index.js",
+  "scripts": {
+    "clear": "rimraf -rf dist tsconfig.tsbuildinfo",
+    "compile": "npm run clear && tsc ",
+    "dev": "tsc  --outDir ./dist  --watch",
+    "build": "rimraf -fr lib && set NODE_ENV=production&& rollup -c rollup.config.js",
+    "test": "node dist/test",
+    "wx": "wxpay crt -m 1618256247 -s 2226191CC87F0902144718CDEE292C3011E2C34E -f  ./src/test/files/apiclient_key.pem -k 1118d224e96a98bb966f6092fda840ed"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.0.1",
+    "rimraf": "^3.0.2",
+    "typescript": "v4",
+    "yargs": "^17.5.1"
+  },
+  "peerDependencies": {},
+  "dependencies": {
+    "install": "^0.13.0",
+    "npm": "^8.13.2",
+    "wechatpay-axios-plugin": "^0.8.5"
+  }
+}
