@@ -19,10 +19,12 @@
     "typescript": "v4",
     "yargs": "^17.5.1"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "alipay-sdk": "^3.2.0",
+    "wechatpay-axios-plugin": "^0.8.5"
+  },
   "dependencies": {
-    "install": "^0.13.0",
-    "npm": "^8.13.2",
+    "alipay-sdk": "^3.2.0",
     "wechatpay-axios-plugin": "^0.8.5"
   }
 }

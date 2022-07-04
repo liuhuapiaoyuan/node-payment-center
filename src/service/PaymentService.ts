@@ -11,7 +11,7 @@ import { TransactionRepository } from './../repository/TransactionRepository';
  * @Author: guohl
  * @Date: 2022-07-03 15:34:06
  * @LastEditors: guohl
- * @LastEditTime: 2022-07-04 02:49:58
+ * @LastEditTime: 2022-07-04 12:43:17
  */
 
 export type PaymentActionParams = {
@@ -64,13 +64,13 @@ export class PaymentService {
    * @returns 
    */
   async create<Config extends PaymentConfig>
-    (payment: Payment<Config>, params:Pick<PaymentActionParams,"amount"|"title"|"body">): 
+    (payment: Payment<Config>, params:Omit<PaymentActionParams,"tradeNo">): 
         Promise<Transaction<Config>> {
     // 按照類型創建
     const paymetnaction = payment.getPaymentAction()
     const tradeNo = await this.tradeNoRepository.genSn()
     // 1：获得对应的参数配置
-    let packParams = await paymetnaction?.asyncPay({...params ,tradeNo});
+    let packParams = await paymetnaction?.asyncPay({...params ,tradeNo} as any);
     // 2: 生成交易号
     let transaction: Transaction<Config> = {
       config: payment.config,

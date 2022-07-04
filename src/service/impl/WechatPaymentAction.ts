@@ -5,10 +5,10 @@
  * @Author: guohl
  * @Date: 2022-07-03 15:59:36
  * @LastEditors: guohl
- * @LastEditTime: 2022-07-04 02:46:03
+ * @LastEditTime: 2022-07-04 02:54:20
  */
 import { readFileSync } from 'fs';
-import Wechatpay, { Formatter, Hash } from 'wechatpay-axios-plugin';
+import Wechatpay, { Formatter, Rsa } from 'wechatpay-axios-plugin';
 import { WechatConfig } from "../../bean/PaymentConfig";
 import { PaymentAction, PaymentActionParams } from "../PaymentService";
 
@@ -38,15 +38,16 @@ export class WechatPaymentAction implements PaymentAction {
 
   async asyncPay(params: PaymentActionParams) {
     const { tradeNo, title, body, amount,openid } = params
+    let privateKey = merchantPrivateKeyInstance
     const wxpay = new Wechatpay({
       mchid: this.config.mchid + "",
       serial: this.config.serial + "",
       secret: this.config.secret + "",
-      privateKey: merchantPrivateKeyInstance,
+      privateKey,
       certs: { [this.config.platformCertificateSerial]: platformCertificateInstance, },
       merchant: {
         cert: platformCertificateInstance,
-        key: merchantPrivateKeyInstance,
+        key,
         passphase: this.config.mchid + "",
         pfx: P12Instance
       }
@@ -72,9 +73,11 @@ export class WechatPaymentAction implements PaymentAction {
           timeStamp: `${Formatter.timestamp()}`,
           nonceStr: Formatter.nonce(),
           package: 'prepay_id=' + data.prepay_id,
-          signType: 'HMAC-SHA256',
-        }
-        const paySign = Hash.sign(params.signType, params, this.config.secret + "")
+          signType: 'RSA',
+        } 
+        const paySign = Rsa.sign(Formatter.joinedByLineFeed(
+          params.appId, params.timeStamp, params.nonceStr, params.package
+        ), privateKey)
         return { ...params, paySign }
       })
       .catch((e) => {

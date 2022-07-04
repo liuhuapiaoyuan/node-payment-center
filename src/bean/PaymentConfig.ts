@@ -5,7 +5,7 @@
  * @Author: guohl
  * @Date: 2022-07-03 11:07:46
  * @LastEditors: guohl
- * @LastEditTime: 2022-07-04 01:46:21
+ * @LastEditTime: 2022-07-04 13:56:13
  */
 
 import { PaymentMethod } from "./constant"
@@ -30,6 +30,8 @@ export class WechatConfig implements PaymentConfig {
     platformCertificateSerial:string 
     /* APIv2密钥(32字节) */
     secret:string 
+    /* 异步回调通知的URL */
+    asyncNotifyUrl:string
     /* platform的二進制内容 */
     private method: PaymentMethod
 
@@ -46,8 +48,11 @@ export class WechatConfig implements PaymentConfig {
  * 支付宝支付配置
  */
 export class AliConfig implements PaymentConfig {
-    mchId?: string
     appId?: string
+    /* 回调的URL */
+    return_url?: string
+    /* 异步回调通知的URL */
+    notify_url?: string
     private method: PaymentMethod
     
     constructor(){

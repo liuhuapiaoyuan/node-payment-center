@@ -1,4 +1,5 @@
 import { TransactionRepository } from '../repository/TransactionRepository';
+import { AliConfig } from './../bean/PaymentConfig';
 /*
  * @Description: 
  * @version: 0.01
@@ -6,7 +7,7 @@ import { TransactionRepository } from '../repository/TransactionRepository';
  * @Author: guohl
  * @Date: 2022-07-04 00:54:34
  * @LastEditors: guohl
- * @LastEditTime: 2022-07-04 02:48:31
+ * @LastEditTime: 2022-07-04 14:17:22
  */
 
 import { Payment } from "../bean/Payment";
@@ -24,7 +25,7 @@ import { PaymentService } from "../service/PaymentService";
 
 class TempTransactionRepository implements TransactionRepository {
   private temp: Record<string, Transaction<any>> = {}
-  
+
   findOne<Config extends PaymentConfig>(tradeNo: string): Promise<Transaction<Config>> {
     return Promise.resolve(this.temp[tradeNo])
   }
@@ -51,16 +52,37 @@ let wepayment = new Payment(wechatConfig)
 let service = new PaymentService(tempTransactionRepository)
 
 async function test() {
-  console.log("===========创建交易开始===========" )
-  let tra = await service.create(wepayment , {
+  console.log("===========创建交易开始===========")
+  let tra = await service.create(wepayment, {
     openid: "ov7MY5aDPvuFKrFYJGTSvQw60OZE",
-    amount:1,
-    body:"測試標題",
-    title:"測試聶榮"}).catch(e=>e)
+    amount: 1,
+    body: "測試標題",
+    title: "測試聶榮"
+  }).catch(e => e)
   console.log(tra)
   console.log("===========创建交易结束===========")
   return tra
 }
-  
 
-test()
+
+async function alipay() {
+  let aliConfig = new AliConfig()
+  aliConfig.appId = "2016080600180853"
+  aliConfig.return_url = "https://www.baidu.com"
+  let alipayment = new Payment(aliConfig)
+
+  console.log("===========创建支付宝交易开始===========")
+  let tra = await service.create(alipayment, {
+    amount: 100,
+    body: "測試標題",
+    title: "測試聶榮",
+    quit_url:"http://www.qq.com"
+  }).catch(e => e)
+  console.log(tra)
+  console.log("===========创建支付宝交易结束===========")
+  return tra
+}
+
+
+
+alipay()
