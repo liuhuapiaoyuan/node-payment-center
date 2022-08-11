@@ -5,7 +5,7 @@
  * @Author: guohl
  * @Date: 2022-07-03 15:59:36
  * @LastEditors: guohl
- * @LastEditTime: 2022-07-04 02:54:20
+ * @LastEditTime: 2022-07-25 17:10:05
  */
 import { readFileSync } from 'fs';
 import Wechatpay, { Formatter, Rsa } from 'wechatpay-axios-plugin';
@@ -47,7 +47,7 @@ export class WechatPaymentAction implements PaymentAction {
       certs: { [this.config.platformCertificateSerial]: platformCertificateInstance, },
       merchant: {
         cert: platformCertificateInstance,
-        key,
+        key:privateKey,
         passphase: this.config.mchid + "",
         pfx: P12Instance
       }

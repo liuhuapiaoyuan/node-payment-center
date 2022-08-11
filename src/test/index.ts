@@ -7,7 +7,7 @@ import { AliConfig } from './../bean/PaymentConfig';
  * @Author: guohl
  * @Date: 2022-07-04 00:54:34
  * @LastEditors: guohl
- * @LastEditTime: 2022-07-04 14:17:22
+ * @LastEditTime: 2022-07-25 17:09:11
  */
 
 import { Payment } from "../bean/Payment";
@@ -85,4 +85,4 @@ async function alipay() {
 
 
 
-alipay()
+test()
